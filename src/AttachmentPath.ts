@@ -75,6 +75,10 @@ export async function interpolateDateToString(plugin: CustomAttachmentLocationPl
     newPath = newPath.replace(/-{2,}/g, "-");
   }
 
+  if (plugin.settings.parameterizeWhitespace) {
+    newPath = newPath.replace(/\s/g, plugin.settings.whitespaceReplacmentParameter);
+  }
+
   return newPath;
 }
 

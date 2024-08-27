@@ -14,6 +14,8 @@ export default class CustomAttachmentLocationPluginSettings {
   public renamePastedFilesWithKnownNames: boolean = false;
   public renameAttachmentsOnDragAndDrop: boolean = false;
   public replaceWhitespace: boolean = false;
+  public parameterizeWhitespace: boolean = false;
+  public whitespaceReplacmentParameter: string = " ";
   public toLowerCase: boolean = false;
 
   public static load(data: unknown): { settings: CustomAttachmentLocationPluginSettings, shouldSave: boolean } {

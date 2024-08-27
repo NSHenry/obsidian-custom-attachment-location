@@ -95,6 +95,38 @@ export default class CustomAttachmentLocationPluginSettingsTab extends PluginSet
       .addToggle((toggle) => bindUiComponent(this.plugin, toggle, "replaceWhitespace"));
 
     new Setting(this.containerEl)
+    .setName("Parameterized whitespace replacement")
+    .setDesc("Useful for replacing whitespace with in the style of MarkDownload browser extension.")
+    .addToggle(toggle => toggle
+      .setValue(settings.parameterizeWhitespace)
+      .onChange(async (value: boolean) => {
+        settings.parameterizeWhitespace = value;
+        await this.plugin.saveSettings(settings);
+      }));
+
+    new Setting(this.containerEl)
+    .setName("Custom parameter")
+    .setDesc(createFragment(f => {
+      f.appendText("Fill this out later...");
+      f.appendChild(createEl("br"));
+      f.appendText("E.g., when you are dragging file ");
+    }))
+    .addText(text => text
+      .setPlaceholder(" ")
+      .setValue(settings.whitespaceReplacmentParameter)
+      .onChange(async (value: string) => {
+        console.debug("whitespaceReplacmentParameter: " + value);
+        const validationError = value === "" ? "" : validateFilename(value);
+        text.inputEl.setCustomValidity(validationError);
+        text.inputEl.reportValidity();
+
+        if (!validationError) {
+          settings.whitespaceReplacmentParameter = value;
+          await this.plugin.saveSettings(settings);
+        }
+      }));
+    
+    new Setting(this.containerEl)
       .setName("All lowercase names")
       .setDesc("Automatically set all characters in folder name and pasted image name to be lowercase.")
       .addToggle((toggle) => bindUiComponent(this.plugin, toggle, "toLowerCase"));
